@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xts.mapper.XtsPayMapper">
+    
+    <resultMap type="XtsPay" id="XtsPayResult">
+        <result property="payId"    column="pay_id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="payPeriod"    column="pay_period"    />
+        <result property="rate"    column="rate"    />
+        <result property="money"    column="money"    />
+        <result property="ysFlag"    column="ys_flag"    />
+        <result property="kpFlag"    column="kp_flag"    />
+        <result property="fkFlag"    column="fk_flag"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXtsPayVo">
+        select pay_id, project_id, pay_period, rate, money, ys_flag, kp_flag, fk_flag, del_flag, create_by, create_time, update_by, update_time from xts_pay
+    </sql>
+
+    <select id="selectXtsPayList" parameterType="XtsPay" resultMap="XtsPayResult">
+        <include refid="selectXtsPayVo"/>
+        <where>  
+            <if test="projectId != null "> and project_id = #{projectId}</if>
+            <if test="payPeriod != null  and payPeriod != ''"> and pay_period = #{payPeriod}</if>
+            <if test="rate != null  and rate != ''"> and rate = #{rate}</if>
+            <if test="money != null  and money != ''"> and money = #{money}</if>
+            <if test="ysFlag != null  and ysFlag != ''"> and ys_flag = #{ysFlag}</if>
+            <if test="kpFlag != null  and kpFlag != ''"> and kp_flag = #{kpFlag}</if>
+            <if test="fkFlag != null  and fkFlag != ''"> and fk_flag = #{fkFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectXtsPayByPayId" parameterType="Long" resultMap="XtsPayResult">
+        <include refid="selectXtsPayVo"/>
+        where pay_id = #{payId}
+    </select>
+        
+    <insert id="insertXtsPay" parameterType="XtsPay" useGeneratedKeys="true" keyProperty="payId">
+        insert into xts_pay
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">project_id,</if>
+            <if test="payPeriod != null">pay_period,</if>
+            <if test="rate != null">rate,</if>
+            <if test="money != null">money,</if>
+            <if test="ysFlag != null">ys_flag,</if>
+            <if test="kpFlag != null">kp_flag,</if>
+            <if test="fkFlag != null">fk_flag,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectId != null">#{projectId},</if>
+            <if test="payPeriod != null">#{payPeriod},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="money != null">#{money},</if>
+            <if test="ysFlag != null">#{ysFlag},</if>
+            <if test="kpFlag != null">#{kpFlag},</if>
+            <if test="fkFlag != null">#{fkFlag},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtsPay" parameterType="XtsPay">
+        update xts_pay
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null">project_id = #{projectId},</if>
+            <if test="payPeriod != null">pay_period = #{payPeriod},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="money != null">money = #{money},</if>
+            <if test="ysFlag != null">ys_flag = #{ysFlag},</if>
+            <if test="kpFlag != null">kp_flag = #{kpFlag},</if>
+            <if test="fkFlag != null">fk_flag = #{fkFlag},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where pay_id = #{payId}
+    </update>
+
+    <delete id="deleteXtsPayByPayId" parameterType="Long">
+        delete from xts_pay where pay_id = #{payId}
+    </delete>
+
+    <delete id="deleteXtsPayByPayIds" parameterType="String">
+        delete from xts_pay where pay_id in 
+        <foreach item="payId" collection="array" open="(" separator="," close=")">
+            #{payId}
+        </foreach>
+    </delete>
+
+</mapper>

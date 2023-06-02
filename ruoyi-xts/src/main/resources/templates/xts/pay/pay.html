@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('付款信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>项目id：</label>
+                                <input type="text" name="projectId"/>
+                            </li>
+                            <li>
+                                <label>期数：</label>
+                                <input type="text" name="payPeriod"/>
+                            </li>
+                            <li>
+                                <label>比例%：</label>
+                                <input type="text" name="rate"/>
+                            </li>
+                            <li>
+                                <label>金额：</label>
+                                <input type="text" name="money"/>
+                            </li>
+                            <li>
+                                <label>验收状态：</label>
+                                <input type="text" name="ysFlag"/>
+                            </li>
+                            <li>
+                                <label>开票状态：</label>
+                                <input type="text" name="kpFlag"/>
+                            </li>
+                            <li>
+                                <label>付款状态：</label>
+                                <input type="text" name="fkFlag"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="xts:pay:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="xts:pay:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="xts:pay:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="xts:pay:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('xts:pay:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('xts:pay:remove')}]];
+        var prefix = ctx + "xts/pay";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "付款信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'payId',
+                    title: '付款id',
+                    visible: false
+                },
+                {
+                    field: 'projectId',
+                    title: '项目id'
+                },
+                {
+                    field: 'payPeriod',
+                    title: '期数'
+                },
+                {
+                    field: 'rate',
+                    title: '比例%'
+                },
+                {
+                    field: 'money',
+                    title: '金额'
+                },
+                {
+                    field: 'ysFlag',
+                    title: '验收状态'
+                },
+                {
+                    field: 'kpFlag',
+                    title: '开票状态'
+                },
+                {
+                    field: 'fkFlag',
+                    title: '付款状态'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.payId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.payId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

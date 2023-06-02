@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xts.mapper.XtsProjectMapper">
+    
+    <resultMap type="XtsProject" id="XtsProjectResult">
+        <result property="projectId"    column="project_id"    />
+        <result property="billId"    column="bill_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="customId"    column="custom_id"    />
+        <result property="contactId"    column="contact_id"    />
+        <result property="swfy"    column="swfy"    />
+        <result property="jlr"    column="jlr"    />
+        <result property="fbGzl"    column="fb_gzl"    />
+        <result property="fbJe"    column="fb_je"    />
+        <result property="fbBtime"    column="fb_btime"    />
+        <result property="fbEtime"    column="fb_etime"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXtsProjectVo">
+        select project_id, bill_id, project_name, custom_id, contact_id, swfy, jlr, fb_gzl, fb_je, fb_btime, fb_etime, status, del_flag, create_by, create_time, update_by, update_time from xts_project
+    </sql>
+
+    <select id="selectXtsProjectList" parameterType="XtsProject" resultMap="XtsProjectResult">
+        <include refid="selectXtsProjectVo"/>
+        <where>  
+            <if test="billId != null "> and bill_id = #{billId}</if>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="customId != null "> and custom_id = #{customId}</if>
+            <if test="contactId != null "> and contact_id = #{contactId}</if>
+            <if test="swfy != null  and swfy != ''"> and swfy = #{swfy}</if>
+            <if test="jlr != null  and jlr != ''"> and jlr = #{jlr}</if>
+            <if test="fbGzl != null  and fbGzl != ''"> and fb_gzl = #{fbGzl}</if>
+            <if test="fbJe != null  and fbJe != ''"> and fb_je = #{fbJe}</if>
+            <if test="fbBtime != null "> and fb_btime = #{fbBtime}</if>
+            <if test="fbEtime != null "> and fb_etime = #{fbEtime}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectXtsProjectByProjectId" parameterType="Long" resultMap="XtsProjectResult">
+        <include refid="selectXtsProjectVo"/>
+        where project_id = #{projectId}
+    </select>
+        
+    <insert id="insertXtsProject" parameterType="XtsProject" useGeneratedKeys="true" keyProperty="projectId">
+        insert into xts_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billId != null">bill_id,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="customId != null">custom_id,</if>
+            <if test="contactId != null">contact_id,</if>
+            <if test="swfy != null">swfy,</if>
+            <if test="jlr != null">jlr,</if>
+            <if test="fbGzl != null">fb_gzl,</if>
+            <if test="fbJe != null">fb_je,</if>
+            <if test="fbBtime != null">fb_btime,</if>
+            <if test="fbEtime != null">fb_etime,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billId != null">#{billId},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="customId != null">#{customId},</if>
+            <if test="contactId != null">#{contactId},</if>
+            <if test="swfy != null">#{swfy},</if>
+            <if test="jlr != null">#{jlr},</if>
+            <if test="fbGzl != null">#{fbGzl},</if>
+            <if test="fbJe != null">#{fbJe},</if>
+            <if test="fbBtime != null">#{fbBtime},</if>
+            <if test="fbEtime != null">#{fbEtime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtsProject" parameterType="XtsProject">
+        update xts_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billId != null">bill_id = #{billId},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="customId != null">custom_id = #{customId},</if>
+            <if test="contactId != null">contact_id = #{contactId},</if>
+            <if test="swfy != null">swfy = #{swfy},</if>
+            <if test="jlr != null">jlr = #{jlr},</if>
+            <if test="fbGzl != null">fb_gzl = #{fbGzl},</if>
+            <if test="fbJe != null">fb_je = #{fbJe},</if>
+            <if test="fbBtime != null">fb_btime = #{fbBtime},</if>
+            <if test="fbEtime != null">fb_etime = #{fbEtime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteXtsProjectByProjectId" parameterType="Long">
+        delete from xts_project where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteXtsProjectByProjectIds" parameterType="String">
+        delete from xts_project where project_id in 
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+
+</mapper>

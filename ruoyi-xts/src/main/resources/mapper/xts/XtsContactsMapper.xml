@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xts.mapper.XtsContactsMapper">
+    
+    <resultMap type="XtsContacts" id="XtsContactsResult">
+        <result property="conId"    column="con_id"    />
+        <result property="conName"    column="con_name"    />
+        <result property="title"    column="title"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="company"    column="company"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXtsContactsVo">
+        select con_id, con_name, title, phone, email, company, status, del_flag, create_by, create_time, update_by, update_time from xts_contacts
+    </sql>
+
+    <select id="selectXtsContactsList" parameterType="XtsContacts" resultMap="XtsContactsResult">
+        <include refid="selectXtsContactsVo"/>
+        <where>  
+            <if test="conName != null  and conName != ''"> and con_name like concat('%', #{conName}, '%')</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectXtsContactsByConId" parameterType="Long" resultMap="XtsContactsResult">
+        <include refid="selectXtsContactsVo"/>
+        where con_id = #{conId}
+    </select>
+        
+    <insert id="insertXtsContacts" parameterType="XtsContacts" useGeneratedKeys="true" keyProperty="conId">
+        insert into xts_contacts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conName != null">con_name,</if>
+            <if test="title != null">title,</if>
+            <if test="phone != null">phone,</if>
+            <if test="email != null">email,</if>
+            <if test="company != null">company,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conName != null">#{conName},</if>
+            <if test="title != null">#{title},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="email != null">#{email},</if>
+            <if test="company != null">#{company},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtsContacts" parameterType="XtsContacts">
+        update xts_contacts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conName != null">con_name = #{conName},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where con_id = #{conId}
+    </update>
+
+    <delete id="deleteXtsContactsByConId" parameterType="Long">
+        delete from xts_contacts where con_id = #{conId}
+    </delete>
+
+    <delete id="deleteXtsContactsByConIds" parameterType="String">
+        delete from xts_contacts where con_id in 
+        <foreach item="conId" collection="array" open="(" separator="," close=")">
+            #{conId}
+        </foreach>
+    </delete>
+
+</mapper>

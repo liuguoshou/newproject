@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xts.mapper.XtsCustomMapper">
+    
+    <resultMap type="XtsCustom" id="XtsCustomResult">
+        <result property="cusId"    column="cus_id"    />
+        <result property="cusName"    column="cus_name"    />
+        <result property="shortname"    column="shortname"    />
+        <result property="no"    column="no"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXtsCustomVo">
+        select cus_id, cus_name, shortname, no, status, del_flag, create_by, create_time, update_by, update_time from xts_custom
+    </sql>
+
+    <select id="selectXtsCustomList" parameterType="XtsCustom" resultMap="XtsCustomResult">
+        <include refid="selectXtsCustomVo"/>
+        <where>  
+            <if test="cusName != null  and cusName != ''"> and cus_name like concat('%', #{cusName}, '%')</if>
+            <if test="shortname != null  and shortname != ''"> and shortname like concat('%', #{shortname}, '%')</if>
+            <if test="no != null  and no != ''"> and no = #{no}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectXtsCustomByCusId" parameterType="Long" resultMap="XtsCustomResult">
+        <include refid="selectXtsCustomVo"/>
+        where cus_id = #{cusId}
+    </select>
+        
+    <insert id="insertXtsCustom" parameterType="XtsCustom" useGeneratedKeys="true" keyProperty="cusId">
+        insert into xts_custom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cusName != null">cus_name,</if>
+            <if test="shortname != null">shortname,</if>
+            <if test="no != null">no,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cusName != null">#{cusName},</if>
+            <if test="shortname != null">#{shortname},</if>
+            <if test="no != null">#{no},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtsCustom" parameterType="XtsCustom">
+        update xts_custom
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cusName != null">cus_name = #{cusName},</if>
+            <if test="shortname != null">shortname = #{shortname},</if>
+            <if test="no != null">no = #{no},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where cus_id = #{cusId}
+    </update>
+
+    <delete id="deleteXtsCustomByCusId" parameterType="Long">
+        delete from xts_custom where cus_id = #{cusId}
+    </delete>
+
+    <delete id="deleteXtsCustomByCusIds" parameterType="String">
+        delete from xts_custom where cus_id in 
+        <foreach item="cusId" collection="array" open="(" separator="," close=")">
+            #{cusId}
+        </foreach>
+    </delete>
+
+</mapper>

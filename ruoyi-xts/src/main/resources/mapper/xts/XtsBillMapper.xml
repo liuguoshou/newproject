@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.xts.mapper.XtsBillMapper">
+    
+    <resultMap type="XtsBill" id="XtsBillResult">
+        <result property="billId"    column="bill_id"    />
+        <result property="name"    column="name"    />
+        <result property="sno"    column="sno"    />
+        <result property="address"    column="address"    />
+        <result property="bank"    column="bank"    />
+        <result property="bankNo"    column="bank_no"    />
+        <result property="phone"    column="phone"    />
+        <result property="conName"    column="con_name"    />
+        <result property="conAddress"    column="con_address"    />
+        <result property="conPhone"    column="con_phone"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXtsBillVo">
+        select bill_id, name, sno, address, bank, bank_no, phone, con_name, con_address, con_phone, del_flag, create_by, create_time, update_by, update_time from xts_bill
+    </sql>
+
+    <select id="selectXtsBillList" parameterType="XtsBill" resultMap="XtsBillResult">
+        <include refid="selectXtsBillVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sno != null  and sno != ''"> and sno = #{sno}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="bank != null  and bank != ''"> and bank = #{bank}</if>
+            <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="conName != null  and conName != ''"> and con_name like concat('%', #{conName}, '%')</if>
+            <if test="conAddress != null  and conAddress != ''"> and con_address = #{conAddress}</if>
+            <if test="conPhone != null  and conPhone != ''"> and con_phone = #{conPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectXtsBillByBillId" parameterType="Long" resultMap="XtsBillResult">
+        <include refid="selectXtsBillVo"/>
+        where bill_id = #{billId}
+    </select>
+        
+    <insert id="insertXtsBill" parameterType="XtsBill" useGeneratedKeys="true" keyProperty="billId">
+        insert into xts_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="sno != null">sno,</if>
+            <if test="address != null">address,</if>
+            <if test="bank != null">bank,</if>
+            <if test="bankNo != null">bank_no,</if>
+            <if test="phone != null">phone,</if>
+            <if test="conName != null">con_name,</if>
+            <if test="conAddress != null">con_address,</if>
+            <if test="conPhone != null">con_phone,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="sno != null">#{sno},</if>
+            <if test="address != null">#{address},</if>
+            <if test="bank != null">#{bank},</if>
+            <if test="bankNo != null">#{bankNo},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="conName != null">#{conName},</if>
+            <if test="conAddress != null">#{conAddress},</if>
+            <if test="conPhone != null">#{conPhone},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXtsBill" parameterType="XtsBill">
+        update xts_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="sno != null">sno = #{sno},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="bank != null">bank = #{bank},</if>
+            <if test="bankNo != null">bank_no = #{bankNo},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="conName != null">con_name = #{conName},</if>
+            <if test="conAddress != null">con_address = #{conAddress},</if>
+            <if test="conPhone != null">con_phone = #{conPhone},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where bill_id = #{billId}
+    </update>
+
+    <delete id="deleteXtsBillByBillId" parameterType="Long">
+        delete from xts_bill where bill_id = #{billId}
+    </delete>
+
+    <delete id="deleteXtsBillByBillIds" parameterType="String">
+        delete from xts_bill where bill_id in 
+        <foreach item="billId" collection="array" open="(" separator="," close=")">
+            #{billId}
+        </foreach>
+    </delete>
+
+</mapper>
